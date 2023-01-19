@@ -1,0 +1,100 @@
+===========================================================================NOTE
+
+At the beginning of the project I stored my project files in a folder
+named "minesweeper". When I moved them to the folder "minesweeper_gui"
+(where PLUSSA would check them), the git commit history disappeared of
+course. Not to worry, the commits before this change can still be found 
+in the folder "13" in my git repo, so read it there to get the full details!
+
+==================================================================DOCUMENTATION
+
+
+-----------------------------------------------------------------Game operation
+
+The player can flag, question mark, or open squares on the board. The player  
+wins when all squares with mines are flagged. The game is lost if a square
+with a mine is opened.
+
+The game can be started using a seed given in the input box next to the start
+button. The game can also be reset, which achieves essentially the same thing,
+except resetting will use the previously used seed, no matter what is entered.
+
+Switching between opening, flagging, and questioning is done by clicking
+the box on the right side of the text "Click type:" on the bottom edge of the 
+window. Question marks only block the player from accidentally opening a square
+that might be a mine. They don't contribute to winning the game.
+
+A timer in the bottom left corner shows the player's efficiency at clearing the
+board. The only function of the time display is to inflate the player's ego.
+
+
+
+-----------------------------------------------------------------Extra features
+
+- When a square is opened a suitable icon is shown instead of a character. This
+  is achieved by setting an icon in the square's button. 
+
+- In addition to opening and flagging squares, it's also possible to question
+  mark a square. The function of a question mark is to stop the player from
+  accidentally opening a square. It differs from the flag in that the player
+  can't beat the game if there are question marks on the board. The player must
+  be certain of all of the locations of mines, and display their certainty
+  by marking mines with flags.
+
+- Choosing between opening, flagging, and questioning is done as described in 
+  the "Game operation" section. Note that there's only one button for toggling
+  (as opposed to radio buttons) and it displays a suitable icon depending on 
+  which mode is used. When the mode is "open", a blank square is displayed. 
+  When the mode is "flag" or "question", their respective icons are shown.
+
+- The first square opened during each game is guaranteed to be blank. This was
+  achieved by cycling through seeds until a board with the clicked square being
+  blank is found. A random number generator was considered for the function,
+  but that would have resulted in the seed values rarely having any purpose.
+  (unless the board seed given is known to have a blank square exactly where 
+  the player would click first)
+  │
+  ├─ A "magic number" approach was used instead, because it guarantees that 
+  │  each "seed/starting square" combination always results in the same board.
+  │  The reason the function "guaranteeSafeOpening" doesn't just iterate by
+  │  adding one to the seed each time is that this would result in consecutive
+  │  seeds possibly resulting in the same board. The bigger the magic number is
+  │  the more consecutive seeds are mapped to different boards.
+  │
+  └─ Flags or question marks can't be placed until the first square has been 
+     opened
+
+- The board size can be changed in steps or by entering a number with the 
+  spinbox at the top of the window.
+
+-----------------------------------------------------------------Design choices
+
+The GUI was made using a UISquare class. The point of this class is to simplify
+the mainwindow class' code. Squares provide a suitable degree of similarity to
+justify having their own class. They're made up of a push-button, a label, and
+information about their state and location. The label only serves the purpose
+of blocking a button once the square has been opened. Logically the labels 
+aren't necessary, but it stops the buttons from visually changing when the 
+player's mouse is hovering over them. I'm aware that I could've disabled 
+buttons when their square is opened, but that would result in greying out the 
+contents. It may be possible to avoid the greying out with stylesheets, but in 
+the scope of this course my label solution was sufficient.
+
+An enumerator was used to clarify the possible states of squares. It's 
+definition can be found in the MainWindow class header because it is used by 
+both the MainWindow and UISquare classes.
+
+Scaling the game window was designed so that the menu elements would remain in
+the same positions relative to each other horizontally no matter how big the 
+board is. Vertically the menu elements were designed to be spaced the same
+distance from the game board above and below it.
+
+When a game ends, one of two things happens. If the game ended in a win, all
+squares that are not mines are opened such as in regular minesweeper. If the
+game ends in a mine exploding, all squares with mines are opened, also like in
+regular minesweeper.
+
+If a square has a flag or question mark in it, it must be un-flagged by
+clicking it as either the flag or question mark. This will reset the square
+back to it's open state. I decided that this was the clearest way to handle
+flagged and question marked squares.
