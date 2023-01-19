@@ -1,0 +1,1 @@
+Start the game by typing "ships.txt" as the file.
