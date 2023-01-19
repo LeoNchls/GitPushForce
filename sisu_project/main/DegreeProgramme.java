@@ -2,7 +2,7 @@
 /**
  * Extends module, adds maximum credits functionality.
  *
- * @author leoma
+ * @author Leo
  */
 public class DegreeProgramme extends Module {
     int maxCredits;

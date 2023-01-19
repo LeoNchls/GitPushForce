@@ -1,0 +1,1 @@
+This project is not functional. It serves as an example of my java knowledge.
